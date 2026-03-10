@@ -7,25 +7,22 @@
     <meta name="description" content="Electrical engineer specializing in embedded systems, power distribution, and PCB design for commercial and industrial applications.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #fafaf8;
-            --bg-alt: #f1f0ec;
+            --bg: #ffffff;
+            --bg-alt: #f7f5f2;
             --bg-card: #ffffff;
-            --navy: #141c2e;
-            --text: #2a2a35;
-            --text-dim: #6b6b7b;
-            --copper: #c17f3e;
-            --copper-light: rgba(193, 127, 62, 0.1);
-            --copper-border: rgba(193, 127, 62, 0.25);
-            --border: #e0dfd8;
-            --border-strong: #cccbc3;
-            --serif: 'DM Serif Display', Georgia, serif;
-            --sans: 'Source Sans 3', system-ui, sans-serif;
-            --mono: 'IBM Plex Mono', monospace;
+            --text: #1a1a1a;
+            --text-dim: #555;
+            --text-light: #999;
+            --accent: #FF6B4A;
+            --accent-glow: rgba(255, 107, 74, 0.08);
+            --accent-border: rgba(255, 107, 74, 0.22);
+            --border: #e2e0dc;
+            --sans: 'Inter', system-ui, sans-serif;
         }
 
         html { scroll-behavior: smooth; }
@@ -38,37 +35,60 @@
             overflow-x: hidden;
         }
 
-        a { color: var(--copper); text-decoration: none; transition: opacity 0.2s; }
-        a:hover { opacity: 0.75; }
+        a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+        a:hover { opacity: 0.7; }
+
+        /* SCROLL PROGRESS */
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 200;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
 
         /* NAV */
         nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            padding: 1rem 2rem;
+            position: fixed; top: 3px; left: 0; right: 0; z-index: 100;
+            padding: 0.9rem 3rem;
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px);
-            background: rgba(250, 250, 248, 0.85);
             border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .nav-logo {
-            font-family: var(--serif);
-            font-size: 1.15rem;
-            color: var(--navy);
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+
+        .nav-name { font-weight: 700; font-size: 0.95rem; }
+        .nav-title { color: var(--text-dim); font-size: 0.8rem; }
+
+        .nav-links { display: flex; list-style: none; align-items: center; }
+
+        .nav-links li + li { border-left: 1px solid var(--border); }
 
         .nav-links a {
             color: var(--text-dim);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 500;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
+            padding: 0.15rem 0.8rem;
             transition: color 0.2s;
         }
 
-        .nav-links a:hover { color: var(--copper); opacity: 1; }
+        .nav-links a:hover { color: var(--accent); opacity: 1; }
 
         .hamburger {
             display: none; background: none; border: none; cursor: pointer;
@@ -76,451 +96,70 @@
         }
         .hamburger span {
             display: block; width: 24px; height: 2px;
-            background: var(--navy); transition: all 0.3s;
+            background: #333; transition: all 0.3s;
         }
 
         /* HERO */
         .hero {
-            position: relative;
             min-height: 85vh;
-            display: flex; align-items: center; justify-content: center;
-            padding: 5rem 2rem 3rem;
-            background: var(--navy);
-            color: #fff;
-            overflow: hidden;
-        }
-
-        .hero-pattern {
-            position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(193, 127, 62, 0.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(193, 127, 62, 0.06) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        .hero-content {
-            position: relative; z-index: 1;
-            max-width: 700px;
-            text-align: center;
-        }
-
-        .hero-tag {
-            font-family: var(--mono);
-            font-size: 0.78rem;
-            color: var(--copper);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1.2rem;
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards 0.2s;
-        }
-
-        .hero-name {
-            font-family: var(--serif);
-            font-size: clamp(2.4rem, 6vw, 3.8rem);
-            font-weight: 400;
-            line-height: 1.15;
-            margin-bottom: 0.6rem;
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards 0.4s;
-        }
-
-        .hero-title {
-            font-size: clamp(1rem, 2.2vw, 1.25rem);
-            color: rgba(255,255,255,0.6);
-            font-weight: 400;
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards 0.6s;
-        }
-
-        .hero-summary {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.55);
-            max-width: 560px;
-            margin: 0 auto 2rem;
-            line-height: 1.8;
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards 0.8s;
-        }
-
-        .hero-links {
-            display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards 1s;
-        }
-
-        .hero-link {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 4px;
-            color: rgba(255,255,255,0.65);
-            font-size: 0.85rem;
-            transition: all 0.25s;
-        }
-
-        .hero-link:hover {
-            border-color: var(--copper);
-            color: var(--copper);
-            background: rgba(193, 127, 62, 0.08);
-            opacity: 1;
-        }
-
-        .hero-link svg { width: 16px; height: 16px; }
-
-        /* CIRCUIT DIVIDER */
-        .circuit-divider {
-            display: block;
-            width: 100%;
-            height: 24px;
-            color: var(--border-strong);
-        }
-
-        /* SECTIONS */
-        section {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        .section-label {
-            font-family: var(--mono);
-            font-size: 0.72rem;
-            color: var(--copper);
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            margin-bottom: 0.4rem;
-        }
-
-        .section-title {
-            font-family: var(--serif);
-            font-size: 1.8rem;
-            font-weight: 400;
-            color: var(--navy);
-            margin-bottom: 1.5rem;
-        }
-
-        /* SKILLS */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-
-        .skill-group {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.4rem;
-        }
-
-        .skill-group h3 {
-            font-family: var(--mono);
-            font-size: 0.7rem;
-            color: var(--copper);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.8rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-
-        .skill-tag {
-            padding: 0.3rem 0.65rem;
-            background: var(--bg-alt);
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            font-size: 0.8rem;
-            font-family: var(--mono);
-            color: var(--text);
-            transition: all 0.25s;
-        }
-
-        .skill-tag:hover {
-            border-color: var(--copper);
-            background: var(--copper-light);
-        }
-
-        /* TIMELINE */
-        .timeline { position: relative; padding-left: 2rem; }
-
-        .timeline::before {
-            content: '';
-            position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem;
-            width: 1px;
-            background: var(--border-strong);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .timeline-item:last-child { margin-bottom: 0; }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute; left: -2rem; top: 0.55rem;
-            width: 9px; height: 9px;
-            border-radius: 50%;
-            background: var(--copper);
-            border: 2px solid var(--bg);
-            box-shadow: 0 0 0 2px var(--copper);
-        }
-
-        .timeline-date {
-            font-family: var(--mono);
-            font-size: 0.73rem;
-            color: var(--text-dim);
-            margin-bottom: 0.3rem;
-        }
-
-        .timeline-item h3 {
-            font-family: var(--serif);
-            font-size: 1.15rem;
-            font-weight: 400;
-            color: var(--navy);
-            margin-bottom: 0.1rem;
-        }
-
-        .timeline-item .org {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            margin-bottom: 0.15rem;
-        }
-
-        .timeline-item .org-desc {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            font-style: italic;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-stack {
-            display: flex; flex-wrap: wrap; gap: 0.4rem;
-            margin-bottom: 0.6rem;
-        }
-
-        .timeline-stack span {
-            font-family: var(--mono);
-            font-size: 0.65rem;
-            padding: 0.15rem 0.45rem;
-            background: var(--copper-light);
-            border: 1px solid var(--copper-border);
-            border-radius: 3px;
-            color: var(--copper);
-        }
-
-        .timeline-item ul { list-style: none; }
-
-        .timeline-item li {
-            color: var(--text-dim);
-            font-size: 0.88rem;
-            padding-left: 1.2rem;
-            position: relative;
-            margin-bottom: 0.35rem;
-        }
-
-        .timeline-item li::before {
-            content: '\2014';
-            position: absolute; left: 0;
-            color: var(--copper);
-            font-size: 0.8rem;
-        }
-
-        /* EDUCATION */
-        .edu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .edu-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.8rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .edu-card::before {
-            content: '';
-            position: absolute; top: 0; left: 0;
-            width: 3px; height: 100%;
-            background: var(--copper);
-        }
-
-        .edu-card .degree {
-            font-family: var(--serif);
-            font-size: 1.1rem;
-            color: var(--navy);
-            margin-bottom: 0.3rem;
-        }
-
-        .edu-card .school {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .edu-card .period {
-            font-family: var(--mono);
-            font-size: 0.73rem;
-            color: var(--text-dim);
-            margin-bottom: 0.7rem;
-        }
-
-        .edu-card .thesis {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            font-style: italic;
-            line-height: 1.6;
-        }
-
-        .edu-card .honors {
-            display: inline-block;
-            margin-top: 0.6rem;
-            font-family: var(--mono);
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            background: var(--copper-light);
-            border: 1px solid var(--copper-border);
-            border-radius: 3px;
-            color: var(--copper);
-        }
-
-        /* EXTRAS */
-        .extras-section {
-            background: var(--bg-alt);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .extras-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 2rem;
-        }
-
-        .extras-group h3 {
-            font-family: var(--mono);
-            font-size: 0.72rem;
-            color: var(--copper);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.8rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .extras-group li {
-            list-style: none;
-            color: var(--text-dim);
-            font-size: 0.88rem;
-            margin-bottom: 0.4rem;
-            padding-left: 1rem;
-            position: relative;
-        }
-
-        .extras-group li::before {
-            content: '\25AA';
-            position: absolute; left: 0;
-            color: var(--copper);
-            font-size: 0.6rem;
-            top: 0.3rem;
-        }
-
-        .lang-level {
-            font-family: var(--mono);
-            font-size: 0.7rem;
-            color: var(--copper);
-            margin-left: 0.3rem;
-        }
-
-        /* FOOTER */
-        footer {
-            background: var(--navy);
-            color: #fff;
-            text-align: center;
-            padding: 2.5rem 2rem;
-        }
-
-        .footer-cta {
-            font-family: var(--mono);
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.4);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .footer-email {
-            font-family: var(--serif);
-            font-size: 1.4rem;
-            color: #fff;
-            transition: color 0.2s;
-        }
-
-        .footer-email:hover { color: var(--copper); opacity: 1; }
-
-        .footer-socials {
-            display: flex; justify-content: center; gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .footer-socials a { color: rgba(255,255,255,0.45); transition: color 0.2s; }
-        .footer-socials a:hover { color: var(--copper); opacity: 1; }
-        .footer-socials svg { width: 20px; height: 20px; }
-
-        .footer-copy {
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.3);
-        }
-
-        /* HERO STATS */
-        .hero-stats {
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 3rem;
-            margin-top: 2.5rem;
+            padding: 5rem 3rem 3rem;
+            background: var(--bg-alt);
+            gap: 5rem;
+        }
+
+        .hero-visual {
+            flex-shrink: 0;
             opacity: 0;
-            animation: fadeUp 0.6s ease forwards 1.2s;
+            animation: fadeIn 0.8s ease forwards 0.2s;
         }
 
-        .stat { text-align: center; }
-
-        .stat-number {
-            font-family: var(--serif);
-            font-size: 2rem;
-            color: var(--copper);
-            display: block;
-            line-height: 1.2;
+        .hero-circle {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: linear-gradient(150deg, #f0ece6, #e8e4de);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 6px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
-        .stat-label {
-            font-family: var(--mono);
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+        .hero-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            border-radius: 50%;
         }
 
-        /* AVAILABILITY BADGE */
+        .hero-circle::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.85;
+        }
+
+        .hero-content { flex: 1; max-width: 500px; }
+
         .availability {
             display: inline-flex;
             align-items: center;
-            gap: 0.45rem;
-            font-size: 0.72rem;
-            color: rgba(255,255,255,0.5);
-            font-family: var(--mono);
-            letter-spacing: 0.03em;
-            margin-bottom: 0.8rem;
-            padding: 0.3rem 0.8rem;
+            gap: 0.4rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: 0.6rem;
+            padding: 0.25rem 0.7rem;
             border: 1px solid rgba(74, 222, 128, 0.2);
             border-radius: 20px;
             background: rgba(74, 222, 128, 0.06);
@@ -529,8 +168,7 @@
         }
 
         .availability-dot {
-            width: 7px;
-            height: 7px;
+            width: 7px; height: 7px;
             border-radius: 50%;
             background: #4ade80;
             animation: pulse 2s ease-in-out infinite;
@@ -541,22 +179,484 @@
             50% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
         }
 
-        /* SCROLL PROGRESS */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .hero-greeting {
+            font-size: clamp(3rem, 7vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.3s;
+        }
+
+        .hero-about {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0.6rem 0 0.4rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.5s;
+        }
+
+        .hero-summary {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.6s;
+        }
+
+        .hero-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.8rem;
+            font-size: 0.72rem;
+            color: var(--text-light);
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.7s;
+        }
+
+        .hero-contact a {
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .hero-contact a:hover { color: var(--text-dim); opacity: 1; }
+        .hero-contact svg { width: 11px; height: 11px; }
+        .hero-contact-sep { color: var(--border); }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.8s;
+        }
+
+        .hero-btn {
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-align: center;
+            line-height: 1.25;
+            padding: 0 0.6rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero-btn:hover {
+            transform: scale(1.08);
+            opacity: 1;
+        }
+
+        .hero-btn--primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .hero-btn--primary:hover {
+            box-shadow: 0 8px 30px rgba(255, 107, 74, 0.3);
+        }
+
+        .hero-btn--outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+        .hero-btn--outline:hover {
+            background: var(--accent-glow);
+            box-shadow: 0 8px 30px rgba(255, 107, 74, 0.15);
+        }
+
+        .hero-btn--ghost {
+            background: rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+        .hero-btn--ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 8px 25px rgba(255, 107, 74, 0.1);
+        }
+
+        /* SECTIONS */
+        section {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 3rem 3rem;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 35px;
             height: 3px;
-            background: var(--copper);
-            z-index: 200;
-            width: 0%;
-            transition: width 0.1s linear;
+            margin-top: 0.4rem;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+
+        /* SKILLS */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .skill-group h3 {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+        }
+
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+        .skill-tag {
+            padding: 0.3rem 0.7rem;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* TIMELINE */
+        .timeline { position: relative; padding-left: 1.5rem; }
+
+        .timeline::before {
+            content: '';
+            position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.2rem;
+        }
+
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute; left: -1.5rem; top: 0.55rem;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .timeline-date {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .timeline-item .org {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .timeline-item .org-desc {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 0.4rem;
+        }
+
+        .timeline-stack {
+            display: flex; flex-wrap: wrap; gap: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-stack span {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 0.15rem 0.45rem;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            color: var(--text-dim);
+        }
+
+        /* METRICS ROW */
+        .metrics-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .metric {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            padding: 0.25rem 0.6rem;
+            background: var(--accent-glow);
+            border: 1px solid var(--accent-border);
+            border-radius: 20px;
+            color: var(--text-dim);
+        }
+
+        .metric strong {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 0.78rem;
+        }
+
+        .timeline-item ul { list-style: none; }
+
+        .timeline-item li {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            padding-left: 1rem;
+            position: relative;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-item li::before {
+            content: '\2014';
+            position: absolute; left: 0;
+            color: var(--accent);
+            font-size: 0.75rem;
+        }
+
+        /* EDUCATION */
+        .edu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .edu-card {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edu-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .edu-card .degree { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .edu-card .school { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.15rem; }
+        .edu-card .period { font-size: 0.72rem; font-weight: 600; color: var(--text-light); margin-bottom: 0.5rem; }
+
+        .edu-card .thesis {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            font-style: italic;
+            padding-left: 0.8rem;
+            border-left: 2px solid var(--accent);
+        }
+
+        .edu-card .thesis-desc {
+            margin-top: 0.3rem;
+            font-size: 0.82rem;
+            color: var(--text-light);
+            font-style: normal;
+        }
+
+        .edu-card .honors {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            background: var(--accent-glow);
+            border: 1px solid var(--accent-border);
+            border-radius: 3px;
+            color: var(--accent);
+        }
+
+        /* CERTIFICATES */
+        .certificates-section {
+            background: var(--bg-alt);
+            border-top: 3px solid var(--accent);
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .cert-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+        }
+
+        .cert-accent {
+            width: 4px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            background: var(--accent);
+        }
+
+        .cert-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .cert-org { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 0.1rem; }
+        .cert-date { font-size: 0.7rem; font-weight: 600; color: var(--text-light); margin-bottom: 0.5rem; }
+
+        .cert-desc {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        .cert-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.6rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            transition: background 0.2s;
+            color: var(--accent);
+            background: var(--accent-glow);
+            border: 1px solid var(--accent-border);
+        }
+
+        .cert-link:hover {
+            background: rgba(255, 107, 74, 0.15);
+            opacity: 1;
+        }
+
+        .cert-link svg { width: 12px; height: 12px; }
+
+        /* EXTRAS */
+        .extras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .extras-group h3 {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .extras-group li {
+            list-style: none;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .lang-level {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-left: 0.3rem;
+        }
+
+        .interest-icon {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            vertical-align: -2px;
+            margin-right: 0.3rem;
+            color: var(--text-light);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 3rem;
+        }
+
+        .footer-grid {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+
+        footer h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem; }
+        footer p, footer a { font-size: 0.85rem; color: var(--text-dim); }
+        footer a:hover { color: var(--accent); opacity: 1; }
+
+        .footer-socials { display: flex; gap: 1rem; }
+
+        .footer-socials a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .footer-socials svg { width: 18px; height: 18px; }
+
+        .footer-copy {
+            max-width: 960px;
+            margin: 1.5rem auto 0;
+            font-size: 0.72rem;
+            color: var(--text-light);
+            text-align: right;
         }
 
         /* SCROLL ANIMATIONS */
         .reveal {
             opacity: 0;
-            transform: translateY(18px);
+            transform: translateY(20px);
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
@@ -570,33 +670,49 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
+            nav { padding: 0.8rem 1.5rem; }
+            .nav-title { display: none; }
             .nav-links { display: none; }
             .nav-links.open {
                 display: flex; flex-direction: column;
                 position: absolute; top: 100%; left: 0; right: 0;
-                background: rgba(250, 250, 248, 0.97);
-                padding: 1rem 2rem 1.5rem;
+                background: rgba(255, 255, 255, 0.97);
+                padding: 1rem 1.5rem 1.5rem;
                 border-bottom: 1px solid var(--border);
-                gap: 1rem;
+                gap: 0.5rem;
             }
+            .nav-links.open li + li { border-left: none; border-top: 1px solid var(--border); padding-top: 0.5rem; }
             .hamburger { display: flex; }
+            .hero {
+                flex-direction: column;
+                padding: 5rem 1.5rem 2.5rem;
+                gap: 2rem;
+                text-align: center;
+            }
+            .hero-circle { width: 200px; height: 200px; }
+            .hero-buttons { justify-content: center; }
+            .hero-btn { width: 90px; height: 90px; font-size: 0.75rem; }
+            .hero-content { max-width: 100%; }
+            .hero-contact { justify-content: center; }
             section { padding: 2.5rem 1.5rem; }
-            .edu-grid { grid-template-columns: 1fr; }
-            .hero { padding: 4rem 1.5rem 2.5rem; }
-            .hero-stats { gap: 1.5rem; }
-            .hero-stats .stat-number { font-size: 1.5rem; }
+            .edu-grid, .cert-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .footer-copy { text-align: center; }
         }
 
         @media print {
-            nav { display: none; }
+            nav, .scroll-progress { display: none; }
             .hero { min-height: auto; padding: 2rem; }
             section { padding: 1.5rem 0; }
-            .edu-card { border: 1px solid #ddd; }
+            .edu-card, .cert-card { box-shadow: none; }
             .reveal { opacity: 1; transform: none; }
-            footer { background: #fff; color: #111; }
-            .footer-email { color: #111; }
         }
     </style>
 </head>
@@ -605,11 +721,16 @@
 <div class="scroll-progress"></div>
 
 <nav>
-    <div class="nav-logo">Efe Oral</div>
+    <div class="nav-left">
+        <span class="nav-dot"></span>
+        <span class="nav-name">Efe Oral</span>
+        <span class="nav-title">Electrical Engineer</span>
+    </div>
     <ul class="nav-links">
         <li><a href="#skills">Skills</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#education">Education</a></li>
+        <li><a href="#certificates">Certificates</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="hamburger" aria-label="Menu">
@@ -619,63 +740,36 @@
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-pattern"></div>
+    <div class="hero-visual">
+        <div class="hero-circle">
+            <img src="profile.png" alt="Efe Oral" class="hero-photo">
+        </div>
+    </div>
     <div class="hero-content">
         <div class="availability"><span class="availability-dot"></span> Open to Work</div>
-        <div class="hero-tag">Electrical &amp; Electronics Engineer</div>
-        <h1 class="hero-name">Efe Oral<span style="color:var(--copper);">,</span> M.Sc.</h1>
-        <p class="hero-title">Designing reliable hardware-software solutions from schematic to system</p>
-        <p class="hero-summary">Electrical engineer specializing in embedded systems, power distribution and electrical load calculations for 55+ commercial buildings. Designed PCB-based microcontroller systems integrating sensor networks to automate workflows and improve operational efficiency.</p>
-        <div class="hero-links">
-            <a href="mailto:efeoral@gmail.com" class="hero-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                efeoral@gmail.com
-            </a>
-            <a href="https://linkedin.com/in/efe-oral" target="_blank" class="hero-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                LinkedIn
-            </a>
-            <a href="https://github.com/Efe-Oral" target="_blank" class="hero-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-                GitHub
-            </a>
-            <a href="tel:+4915510940538" class="hero-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                +49 15510 940538
-            </a>
+        <h1 class="hero-greeting">Hello</h1>
+        <h2 class="hero-about">A Bit About Me</h2>
+        <p class="hero-summary">Electrical engineer specializing in embedded systems, power distribution and electrical load calculations for commercial buildings. Designed PCB-based microcontroller systems integrating sensor networks to automate workflows and improve operational efficiency.</p>
+        <div class="hero-contact">
+            <a href="mailto:efeoral@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>efeoral@gmail.com</a>
+            <span class="hero-contact-sep">&middot;</span>
+            <a href="tel:+4915510940538"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+49 15510 940538</a>
+            <span class="hero-contact-sep">&middot;</span>
+            <a href="https://linkedin.com/in/efe-oral" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+            <span class="hero-contact-sep">&middot;</span>
+            <a href="https://github.com/Efe-Oral" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>GitHub</a>
         </div>
-        <div class="hero-stats">
-            <div class="stat">
-                <span class="stat-number" data-target="55" data-suffix="+">0</span>
-                <span class="stat-label">Buildings Designed</span>
-            </div>
-            <div class="stat">
-                <span class="stat-number" data-target="75" data-suffix="kW">0</span>
-                <span class="stat-label">Max Power System</span>
-            </div>
-            <div class="stat">
-                <span class="stat-number" data-target="4">0</span>
-                <span class="stat-label">Devices Automated</span>
-            </div>
+        <div class="hero-buttons">
+            <a href="#experience" class="hero-btn hero-btn--primary">Work Experience</a>
+            <a href="#skills" class="hero-btn hero-btn--outline">Skills</a>
+            <a href="#contact" class="hero-btn hero-btn--ghost">Contact</a>
         </div>
     </div>
 </section>
 
-<!-- CIRCUIT DIVIDER SVG -->
-<svg class="circuit-divider" viewBox="0 0 1200 24" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <line x1="0" y1="12" x2="480" y2="12" stroke="currentColor" stroke-width="1"/>
-    <circle cx="490" cy="12" r="3" fill="currentColor"/>
-    <line x1="500" y1="12" x2="560" y2="12" stroke="currentColor" stroke-width="1"/>
-    <rect x="560" y="8" width="80" height="8" rx="1" stroke="currentColor" stroke-width="1" fill="none"/>
-    <line x1="640" y1="12" x2="700" y2="12" stroke="currentColor" stroke-width="1"/>
-    <circle cx="710" cy="12" r="3" fill="currentColor"/>
-    <line x1="720" y1="12" x2="1200" y2="12" stroke="currentColor" stroke-width="1"/>
-</svg>
-
 <!-- SKILLS -->
 <section id="skills" class="reveal">
-    <div class="section-label">Technical Expertise</div>
-    <h2 class="section-title">Skills &amp; Tools</h2>
+    <h2 class="section-title">Technical Skills</h2>
     <div class="skills-grid">
         <div class="skill-group">
             <h3>Embedded Systems</h3>
@@ -696,7 +790,7 @@
             </div>
         </div>
         <div class="skill-group">
-            <h3>Protocols & IoT</h3>
+            <h3>Protocols &amp; IoT</h3>
             <div class="skill-tags">
                 <span class="skill-tag">IoT</span>
                 <span class="skill-tag">I2C</span>
@@ -704,7 +798,7 @@
             </div>
         </div>
         <div class="skill-group">
-            <h3>Design & Tools</h3>
+            <h3>Design &amp; Tools</h3>
             <div class="skill-tags">
                 <span class="skill-tag">KiCAD</span>
                 <span class="skill-tag">AutoCAD</span>
@@ -717,7 +811,6 @@
 
 <!-- EXPERIENCE -->
 <section id="experience" class="reveal">
-    <div class="section-label">Professional History</div>
     <h2 class="section-title">Work Experience</h2>
     <div class="timeline">
         <div class="timeline-item">
@@ -740,9 +833,14 @@
             <div class="timeline-stack">
                 <span>AutoCAD</span><span>Microsoft Excel</span>
             </div>
+            <div class="metrics-row">
+                <span class="metric"><strong>55+</strong> schematics</span>
+                <span class="metric"><strong>75 kW</strong> max system</span>
+                <span class="metric"><strong>3-phase</strong> distribution</span>
+            </div>
             <ul>
-                <li>Designed 55+ high and low-voltage electrical distribution schematics for buildings and stores</li>
-                <li>Engineered three-phase distribution systems up to 75 kW with optimized load balancing</li>
+                <li>Designed high and low-voltage electrical distribution schematics for buildings and stores</li>
+                <li>Engineered three-phase distribution systems with optimized load balancing</li>
                 <li>Executed load calculations and cable sizing based on demand and diversity factors</li>
                 <li>Resolved technical queries from stakeholders and contractors</li>
             </ul>
@@ -770,30 +868,23 @@
             <div class="timeline-stack">
                 <span>Raspberry Pi</span><span>Python</span><span>Arduino</span><span>C</span><span>IoT</span><span>I2C</span>
             </div>
+            <div class="metrics-row">
+                <span class="metric"><strong>4</strong> devices automated</span>
+                <span class="metric"><strong>3</strong> sensor types</span>
+                <span class="metric"><strong>2</strong> PCBs designed</span>
+            </div>
             <ul>
-                <li>Automated measurement procedures for 4 fiber optic cable testing devices within 4 months</li>
+                <li>Automated measurement procedures for fiber optic cable testing devices within 4 months</li>
                 <li>Implemented a NodeMCU-based IoT communication server for wireless data transmission to cloud</li>
-                <li>Integrated 3 sensor types across Arduino platforms for embedded data collection and real-time monitoring</li>
-                <li>Designed 2 PCB cards and 3D printed enclosure</li>
+                <li>Integrated sensor types across Arduino platforms for embedded data collection and real-time monitoring</li>
+                <li>Designed PCB cards and 3D printed enclosure</li>
             </ul>
         </div>
     </div>
 </section>
 
-<!-- CIRCUIT DIVIDER -->
-<svg class="circuit-divider" viewBox="0 0 1200 24" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <line x1="0" y1="12" x2="350" y2="12" stroke="currentColor" stroke-width="1"/>
-    <circle cx="360" cy="12" r="3" fill="currentColor"/>
-    <line x1="370" y1="12" x2="430" y2="12" stroke="currentColor" stroke-width="1"/>
-    <polyline points="430,12 445,4 475,20 505,4 535,20 550,12" stroke="currentColor" stroke-width="1" fill="none"/>
-    <line x1="550" y1="12" x2="610" y2="12" stroke="currentColor" stroke-width="1"/>
-    <circle cx="620" cy="12" r="3" fill="currentColor"/>
-    <line x1="630" y1="12" x2="1200" y2="12" stroke="currentColor" stroke-width="1"/>
-</svg>
-
 <!-- EDUCATION -->
 <section id="education" class="reveal">
-    <div class="section-label">Academic Background</div>
     <h2 class="section-title">Education</h2>
     <div class="edu-grid">
         <div class="edu-card">
@@ -806,60 +897,124 @@
             <div class="degree">B.Sc. Electrical &amp; Electronic Engineering</div>
             <div class="school">Maltepe University &bull; Istanbul, Turkey</div>
             <div class="period">Sep 2018 &mdash; Jul 2022</div>
-            <div class="thesis">Thesis: Wireless Sensor Network Node (MQ Gas Sensor Array)</div>
-            <div style="margin-top: 0.4rem; font-size: 0.85rem; color: var(--text-dim);">Designed and implemented a wireless gas sensor node for environmental monitoring</div>
+            <div class="thesis">Thesis: Wireless Sensor Network Node (MQ Gas Sensor Array)
+                <p class="thesis-desc">Designed and implemented a wireless gas sensor node for environmental monitoring</p>
+            </div>
             <span class="honors">Graduated 2nd in Class</span>
         </div>
     </div>
 </section>
 
-<!-- EXTRAS -->
-<div class="extras-section">
-    <section class="reveal">
-        <div class="section-label">Additional</div>
-        <h2 class="section-title">Certificates &amp; Languages</h2>
-        <div class="extras-grid">
-            <div class="extras-group">
-                <h3>Certificates</h3>
-                <ul>
-                    <li>Converter Circuits, Univ. of Colorado Boulder (Coursera) <span class="lang-level">10/2022</span></li>
-                    <li>Intro to Power Electronics, Univ. of Colorado Boulder (Coursera) <span class="lang-level">05/2021</span></li>
-                </ul>
+<!-- CERTIFICATES -->
+<div class="certificates-section">
+    <section id="certificates" class="reveal">
+        <h2 class="section-title">Certificates</h2>
+        <div class="cert-grid">
+            <div class="cert-card">
+                <div class="cert-accent"></div>
+                <div>
+                    <h3>Converter Circuits</h3>
+                    <p class="cert-org">University of Colorado Boulder (Coursera)</p>
+                    <p class="cert-date">October 2022</p>
+                    <p class="cert-desc">Advanced course covering DC-DC converter topologies, switching techniques, and steady-state analysis for power electronics applications.</p>
+                    <a href="https://drive.google.com/file/d/1ebmQtwG0doHTQqOzDxvUGQ7X916uNQDh/view?usp=sharing" target="_blank" class="cert-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        View Certificate
+                    </a>
+                </div>
             </div>
-            <div class="extras-group">
-                <h3>Languages</h3>
-                <ul>
-                    <li>English <span class="lang-level">C1</span></li>
-                    <li>Turkish <span class="lang-level">Native</span></li>
-                    <li>German <span class="lang-level">A2</span></li>
-                </ul>
+            <div class="cert-card">
+                <div class="cert-accent"></div>
+                <div>
+                    <h3>Introduction to Power Electronics</h3>
+                    <p class="cert-org">University of Colorado Boulder (Coursera)</p>
+                    <p class="cert-date">May 2021</p>
+                    <p class="cert-desc">Foundational course in power conversion principles, switch-mode converters, and techniques for efficient energy transformation.</p>
+                    <a href="https://drive.google.com/file/d/1qnW5f8Jxore-UaaQbuPNkTuJJFZd_y2i/view?usp=sharing" target="_blank" class="cert-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        View Certificate
+                    </a>
+                </div>
             </div>
-            <div class="extras-group">
-                <h3>Interests</h3>
-                <ul>
-                    <li>3D printing movie monsters</li>
-                    <li>Playing chess</li>
-                    <li>Reading world literature</li>
-                    <li>Playing bass guitar</li>
-                </ul>
+            <div class="cert-card">
+                <div class="cert-accent"></div>
+                <div>
+                    <h3>MATLAB Onramp</h3>
+                    <p class="cert-org">MathWorks</p>
+                    <p class="cert-date">2021</p>
+                    <p class="cert-desc">Hands-on introduction to MATLAB programming, covering data analysis, visualization, and scripting fundamentals for engineering workflows.</p>
+                    <a href="https://drive.google.com/file/d/1EofE0xToCScsqqUAG0ODDFl9n_7Ik0VN/view?usp=sharing" target="_blank" class="cert-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        View Certificate
+                    </a>
+                </div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-accent"></div>
+                <div>
+                    <h3>MATLAB Path Tracking Drone Competition</h3>
+                    <p class="cert-org">MathWorks</p>
+                    <p class="cert-date">2021</p>
+                    <p class="cert-desc">Competition certificate for designing and implementing autonomous drone path-tracking algorithms using MATLAB and Simulink.</p>
+                    <a href="https://drive.google.com/file/d/1plKbNLeyLyIOQYQG00i1KM98pJHoR-hu/view?usp=sharing" target="_blank" class="cert-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        View Certificate
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 </div>
 
+<!-- LANGUAGES & INTERESTS -->
+<section class="reveal">
+    <div class="extras-grid">
+        <div class="extras-group">
+            <h3>Languages</h3>
+            <ul>
+                <li>English <span class="lang-level">C1</span></li>
+                <li>Turkish <span class="lang-level">Native</span></li>
+                <li>German <span class="lang-level">A2</span></li>
+            </ul>
+        </div>
+        <div class="extras-group">
+            <h3>Interests</h3>
+            <ul>
+                <li><svg class="interest-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>3D printing movie monsters</li>
+                <li><svg class="interest-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Playing chess</li>
+                <li><svg class="interest-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Reading world literature</li>
+                <li><svg class="interest-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Playing bass guitar</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
 <!-- FOOTER -->
 <footer id="contact">
-    <div class="footer-cta">Let's engineer something great together</div>
-    <a href="mailto:efeoral@gmail.com" class="footer-email">efeoral@gmail.com</a>
-    <div class="footer-socials">
-        <a href="https://linkedin.com/in/efe-oral" target="_blank" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        </a>
-        <a href="https://github.com/Efe-Oral" target="_blank" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-        </a>
+    <div class="footer-grid">
+        <div>
+            <h3>Phone</h3>
+            <p><a href="tel:+4915510940538">+49 15510 940538</a></p>
+        </div>
+        <div>
+            <h3>Email</h3>
+            <p><a href="mailto:efeoral@gmail.com">efeoral@gmail.com</a></p>
+        </div>
+        <div>
+            <h3>Follow Me</h3>
+            <div class="footer-socials">
+                <a href="https://linkedin.com/in/efe-oral" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/Efe-Oral" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
     </div>
-    <p class="footer-copy">Efe Oral &copy; 2026 &mdash; Essen, Germany</p>
+    <p class="footer-copy">&copy; 2026 Efe Oral &mdash; Essen, Germany</p>
 </footer>
 
 <script>
@@ -869,34 +1024,6 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 reveals.forEach(el => observer.observe(el));
-
-// Animated counters
-const counters = document.querySelectorAll('.stat-number[data-target]');
-let counted = false;
-function animateCounters() {
-    if (counted) return;
-    counted = true;
-    counters.forEach(el => {
-        const target = +el.dataset.target;
-        const suffix = el.dataset.suffix || '';
-        const duration = 1200;
-        const start = performance.now();
-        function tick(now) {
-            const p = Math.min((now - start) / duration, 1);
-            const ease = 1 - Math.pow(1 - p, 3);
-            el.textContent = Math.floor(target * ease) + suffix;
-            if (p < 1) requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-    });
-}
-const statsEl = document.querySelector('.hero-stats');
-if (statsEl) {
-    const so = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) animateCounters(); });
-    }, { threshold: 0.3 });
-    so.observe(statsEl);
-}
 
 // Scroll progress
 window.addEventListener('scroll', () => {
