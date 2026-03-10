@@ -4,8 +4,9 @@ Two portfolio websites for **Efe Oral** — one for electrical engineering and o
 
 ## Live
 
-- [efe-oral.github.io/electrical-engineer](https://efe-oral.github.io/electrical-engineer)
-- [efe-oral.github.io/game-dev](https://efe-oral.github.io/game-dev)
+- [efe-oral.github.io](https://efe-oral.github.io) — Landing page
+- [efe-oral.github.io/electrical-engineer](https://efe-oral.github.io/electrical-engineer) — Electrical Engineering CV
+- [efe-oral.github.io/game-dev](https://efe-oral.github.io/game-dev) — Game Development CV
 
 ## Structure
 
